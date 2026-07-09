@@ -18,7 +18,7 @@ Day6 계산기는 HTML의 `onclick` 속성을 사용하지 않고, `calculator.j
 
 ## Day7/8: 암호화폐 가격 변동 추적기
 
-1. `cryptocurrency.html` 파일을 브라우저에서 엽니다.
+1. `oz_assignment/cryptocurrency.html` 파일을 브라우저에서 엽니다.
 2. Binance API에서 USDT 마켓 데이터를 매초 불러옵니다.
 3. 검색창에서 심볼을 검색하거나 별 버튼으로 관심항목을 저장합니다.
 
