@@ -176,9 +176,216 @@ function start(formula) {
     return result;
 }
 
+let currentFormula = "";
+let isPowerOn = true;
+let isCalculated = false;
+
+function getCalculatorElements() {
+    if (typeof document === "undefined") {
+        return null;
+    }
+
+    const calculator = document.querySelector(".calculator");
+    const display = document.querySelector("#display");
+
+    if (!calculator || !display) {
+        return null;
+    }
+
+    return {
+        calculator,
+        display,
+        onOffButton: document.querySelector(".on-off"),
+        actionButtons: document.querySelectorAll(".calculator button:not(.on-off)"),
+        buttons: document.querySelectorAll(".calculator button"),
+    };
+}
+
+function setDisplay(value) {
+    const elements = getCalculatorElements();
+
+    if (elements) {
+        elements.display.value = value;
+    }
+}
+
+function getLastInputToken() {
+    return currentFormula.trim().split(/\s+/).pop() || "";
+}
+
+function appendNumber(number) {
+    if (!isPowerOn) {
+        return;
+    }
+
+    const elements = getCalculatorElements();
+
+    if (isCalculated) {
+        currentFormula = "";
+        isCalculated = false;
+    }
+
+    if (number === "." && getLastInputToken().includes(".")) {
+        return;
+    }
+
+    if (currentFormula !== "" && isOperator(getLastInputToken())) {
+        currentFormula += " ";
+    }
+
+    if (number === "." && (currentFormula === "" || isOperator(getLastInputToken()))) {
+        currentFormula += "0";
+    }
+
+    currentFormula += number;
+    setDisplay(currentFormula || "0");
+
+    if (elements && (elements.display.value === "Error" || elements.display.value === "DivBy0")) {
+        elements.display.value = currentFormula;
+    }
+}
+
+function appendOperator(operator) {
+    if (!isPowerOn) {
+        return;
+    }
+
+    if (isCalculated) {
+        isCalculated = false;
+    }
+
+    if (currentFormula === "") {
+        currentFormula = "0";
+    }
+
+    const tokens = currentFormula.trim().split(/\s+/);
+    const lastToken = tokens[tokens.length - 1];
+
+    if (isOperator(lastToken)) {
+        tokens[tokens.length - 1] = operator;
+        currentFormula = tokens.join(" ");
+    } else {
+        currentFormula = `${currentFormula.trim()} ${operator}`;
+    }
+
+    setDisplay(`${currentFormula} `);
+}
+
+function clearDisplay() {
+    if (!isPowerOn) {
+        return;
+    }
+
+    currentFormula = "";
+    isCalculated = false;
+    setDisplay("0");
+}
+
+function togglePower() {
+    const elements = getCalculatorElements();
+
+    if (!elements) {
+        return;
+    }
+
+    isPowerOn = !isPowerOn;
+    currentFormula = "";
+    isCalculated = false;
+
+    if (isPowerOn) {
+        elements.display.value = "0";
+        elements.display.style.backgroundColor = "#222";
+        elements.onOffButton.classList.add("on");
+        elements.actionButtons.forEach((button) => {
+            button.disabled = false;
+        });
+    } else {
+        elements.display.value = "";
+        elements.display.style.backgroundColor = "#111";
+        elements.onOffButton.classList.remove("on");
+        elements.actionButtons.forEach((button) => {
+            button.disabled = true;
+        });
+    }
+}
+
+function normalizeFormulaForCalculation() {
+    const tokens = currentFormula.trim().split(/\s+/);
+
+    if (isOperator(tokens[tokens.length - 1])) {
+        tokens.pop();
+    }
+
+    return tokens.join(" ");
+}
+
+function performCalculate() {
+    if (!isPowerOn || currentFormula.trim() === "") {
+        return;
+    }
+
+    const result = calculate(normalizeFormulaForCalculation());
+    isCalculated = true;
+
+    if (typeof result === "string") {
+        setDisplay(result === "0으로 나눌 수 없습니다." ? "DivBy0" : "Error");
+        currentFormula = "";
+        return;
+    }
+
+    currentFormula = String(result);
+    setDisplay(currentFormula);
+}
+
+function handleCalculatorClick(event) {
+    const button = event.target.closest("button");
+
+    if (!button) {
+        return;
+    }
+
+    const { type, value } = button.dataset;
+
+    if (type === "power") {
+        togglePower();
+    } else if (type === "clear") {
+        clearDisplay();
+    } else if (type === "number") {
+        appendNumber(value);
+    } else if (type === "operator") {
+        appendOperator(value);
+    } else if (type === "calculate") {
+        performCalculate();
+    }
+}
+
+function setupCalculatorUI() {
+    const elements = getCalculatorElements();
+
+    if (!elements) {
+        return;
+    }
+
+    elements.onOffButton.classList.add("on");
+    elements.calculator.addEventListener("click", handleCalculatorClick);
+}
+
 if (typeof window !== "undefined") {
     window.start = start;
     window.calculate = calculate;
+    window.togglePower = togglePower;
+    window.clearDisplay = clearDisplay;
+    window.appendNumber = appendNumber;
+    window.appendOperator = appendOperator;
+    window.performCalculate = performCalculate;
+}
+
+if (typeof document !== "undefined") {
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupCalculatorUI);
+    } else {
+        setupCalculatorUI();
+    }
 }
 
 if (typeof module !== "undefined" && module.exports) {

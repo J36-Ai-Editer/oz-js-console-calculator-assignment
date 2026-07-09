@@ -1,12 +1,20 @@
-# Console Calculator Assignment
+# JavaScript Calculator Assignments
 
-웹 브라우저 콘솔에서 실행할 수 있는 사칙연산 계산기입니다.
+JavaScript로 만든 사칙연산 계산기 과제 모음입니다.
 
-## 실행 방법
+## Day5: 콘솔 계산기
 
 1. `index.html` 파일을 브라우저에서 엽니다.
 2. 개발자 도구의 Console 탭을 엽니다.
 3. `start()`를 입력하거나 `start("10 + 2 * 3 - 4 / 2")`처럼 계산식을 전달합니다.
+
+## Day6: DOM 계산기
+
+1. `calculator.html` 파일을 브라우저에서 엽니다.
+2. 계산기 버튼을 클릭하여 식을 입력합니다.
+3. `Enter` 버튼을 누르면 결과가 표시됩니다.
+
+Day6 계산기는 HTML의 `onclick` 속성을 사용하지 않고, `calculator.js`에서 `querySelector`와 `addEventListener`를 사용해 버튼 이벤트를 연결합니다.
 
 ## 지원 기능
 
