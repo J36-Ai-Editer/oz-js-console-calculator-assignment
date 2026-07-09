@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>암호화폐 가격 변동 추적기</title>
+    <link rel="stylesheet" href="cryptocurrency_style.css">
+    <script src="cryptocurrency.js" defer></script>
+</head>
+<body>
+    <main class="container">
+        <header class="page-header">
+            <h1>실시간 암호화폐 가격 변동 추적기</h1>
+            <p id="updateStatus">Binance USDT 마켓 데이터를 불러오는 중입니다.</p>
+        </header>
+
+        <section class="toolbar" aria-label="암호화폐 필터">
+            <div class="tabs">
+                <button id="allTab" class="tab-btn active" type="button" data-tab="all">전체보기</button>
+                <button id="favoritesTab" class="tab-btn" type="button" data-tab="favorites">관심항목</button>
+            </div>
+
+            <label class="search-container" for="searchInput">
+                <span>심볼 검색</span>
+                <input type="text" id="searchInput" placeholder="예: BTCUSDT">
+            </label>
+        </section>
+
+        <div id="loading" class="loading">데이터를 불러오는 중...</div>
+        <div id="emptyMessage" class="empty-message hidden">표시할 암호화폐가 없습니다.</div>
+
+        <div class="table-wrap">
+            <table id="cryptoTable" class="hidden">
+                <thead>
+                    <tr>
+                        <th>관심</th>
+                        <th>심볼</th>
+                        <th>현재가</th>
+                        <th>24시간 변동률</th>
+                        <th>최고가</th>
+                        <th>최저가</th>
+                    </tr>
+                </thead>
+                <tbody id="cryptoList"></tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

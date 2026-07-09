@@ -1,6 +1,6 @@
-# JavaScript Calculator Assignments
+# JavaScript Assignments
 
-JavaScript로 만든 사칙연산 계산기 과제 모음입니다.
+JavaScript로 만든 실습 과제 모음입니다.
 
 ## Day5: 콘솔 계산기
 
@@ -16,7 +16,15 @@ JavaScript로 만든 사칙연산 계산기 과제 모음입니다.
 
 Day6 계산기는 HTML의 `onclick` 속성을 사용하지 않고, `calculator.js`에서 `querySelector`와 `addEventListener`를 사용해 버튼 이벤트를 연결합니다.
 
-## 지원 기능
+## Day7/8: 암호화폐 가격 변동 추적기
+
+1. `cryptocurrency.html` 파일을 브라우저에서 엽니다.
+2. Binance API에서 USDT 마켓 데이터를 매초 불러옵니다.
+3. 검색창에서 심볼을 검색하거나 별 버튼으로 관심항목을 저장합니다.
+
+관심항목은 `localStorage`에 저장되어 새로고침 후에도 유지됩니다.
+
+## 계산기 지원 기능
 
 - 덧셈, 뺄셈, 곱셈, 나눗셈
 - 긴 계산식 처리
